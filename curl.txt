@@ -1,0 +1,49 @@
+
+1. Setting the connectors
+
+curl --location 'http://localhost:8083/connectors' \
+--header 'Content-Type: application/json' \
+--data '{
+  "name": "sqlserver-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "sqlserver",
+    "database.port": "1433",
+    "database.user": "sa",
+    "database.password": "password123",
+    "database.names": "InisiasiData",
+    "topic.prefix": "inisiasi_data",
+    "table.include.list": "dbo.Prospeks,dbo.ProfileData",
+    "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+    "schema.history.internal.kafka.topic": "dbhistory.sqlserver",
+    "database.encrypt": "false",
+    "snapshot.mode": "no_data"
+  }
+}'
+
+2. if any update config for connector, use it
+
+curl --location --request PUT 'http://localhost:8083/connectors/sqlserver-connector/config' \
+--header 'Content-Type: application/json' \
+--data '{
+  "name": "sqlserver-connector",
+  "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+  "database.hostname": "sqlserver",
+  "database.port": "1433",
+  "database.user": "sa",
+  "database.password": "password123",
+  "database.names": "InisiasiData",
+  "topic.prefix": "inisiasi_data",
+  "table.include.list": "dbo.Prospeks,dbo.ProfileData",
+  "database.history.kafka.bootstrap.servers": "broker:29092",
+  "schema.history.internal.kafka.topic": "dbhistory.sqlserver",
+  "database.encrypt": "false",
+  "snapshot.mode": "always"
+}'
+
+3. for checking connector status 
+curl --location 'http://localhost:8083/connectors/sqlserver-connector/status'
+
+
+4. for deleting the connector 
+curl -X DELETE http://localhost:8083/connectors/sqlserver-connector
