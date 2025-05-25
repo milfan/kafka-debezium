@@ -89,6 +89,15 @@ services:
       start_period: 10s
       timeout: 3s
 
+  mongodb:
+    hostname: mongodb
+    container_name: mongodb
+    image: arm64v8/mongo:5
+    environment:
+      MONGO_INITDB_DATABASE: mongo_local
+    ports: 
+      - '27017:27017'
+
   connect:
     image: debezium/connect:2.7.3.Final
     depends_on:
